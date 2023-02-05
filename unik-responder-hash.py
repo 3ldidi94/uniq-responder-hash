@@ -36,6 +36,8 @@ def reader(file, ofile, machine_hash, print_users):
             print (f"Users :\n{users}")
     print (f"\n[+] {nbr_hash} uniq hashes written to {ofile} !")
 
+    print (f"\nRemember to crack it : hashcat -w 3 -a 0 -m 5600 -O -D 1,2 unik-hash-output.txt <WORDLIST> -r <RULES>")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A program that remove several hashes for a same user. For Responder NetNTLMv2 log file.")
     parser.add_argument("-f","--file", help="File of responder hash to parse.")
