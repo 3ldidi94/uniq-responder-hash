@@ -8,6 +8,7 @@ import argparse
 import sys
 from os.path import exists
 
+
 def reader(file, ofile, machine_hash, print_users):
     users = []
     final_hash = []
@@ -16,27 +17,28 @@ def reader(file, ofile, machine_hash, print_users):
     with open(file, 'r') as data:
         data = data.read().splitlines()
         for hash in data:
-            user = hash.split('::')[0]
-            if user not in users:
-                if machine_hash:
-                    users.append(user)
-                    final_hash.append(hash)
-                else:
-                    if not "$" in user[-1]:
-                        users.append(user)
-                        final_hash.append(hash)
+            if hash.split():
+                user = hash.split('::')[0]
+                if user not in users:
+                    if len(user) >=2:
+                        if machine_hash:
+                            users.append(user)
+                            final_hash.append(hash)
+                        else:
+                            if not "$" in user[-1]:
+                            users.append(user)
+                            final_hash.append(hash)
     
     with open(ofile, 'w') as data:
         for hash in final_hash:
             nbr_hash += 1
             data.write(hash+'\n')
         if print_users:
-            #for user in users:
-            #    print (f"{user}")
             print (f"Users :\n{users}")
     print (f"\n[+] {nbr_hash} uniq hashes written to {ofile} !")
 
     print (f"\nRemember to crack it : hashcat -w 3 -a 0 -m 5600 -O -D 1,2 unik-hash-output.txt <WORDLIST> -r <RULES>")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A program that remove several hashes for a same user. For Responder NetNTLMv2 log file.")
@@ -55,6 +57,5 @@ if __name__ == "__main__":
                 sys.exit(f"The specified file '{args.file}' was not found.")
         except Exception as error:
             sys.exit(f"ERROR :\nException : {error}")
-
     else:
         sys.exit("[!] You must specified a NetNTLMv2 file ! Try '-h' for the help.")
