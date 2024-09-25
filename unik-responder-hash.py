@@ -8,6 +8,12 @@ import argparse
 import sys
 from os.path import exists
 
+GREEN="\033[92m"
+YELLOW="\033[33m"
+RED="\033[91m"
+BLUE="\033[94m"
+Default="\033[0m"
+
 
 def reader(file, ofile, machine_hash, print_users):
     users = []
@@ -34,10 +40,14 @@ def reader(file, ofile, machine_hash, print_users):
             nbr_hash += 1
             data.write(hash+'\n')
         if print_users:
-            print (f"Users :\n{users}")
-    print (f"\n[+] {nbr_hash} uniq hashes written to {ofile} !")
+            print (f"{YELLOW}Captured users:\n")
+            for user in users:
+                print (f"{GREEN}{user}{Default}")
+            ## Print users in list format
+            #print (f"Users :\n{users}")
+    print (f"\n{YELLOW}[+] {nbr_hash} uniq hashes written to{Default} {ofile} {YELLOW}!{Default}")
 
-    print (f"\nRemember to crack it : hashcat -w 3 -a 0 -m 5600 -O -D 1,2 unik-hash-output.txt <WORDLIST> -r <RULES>")
+    print (f"\n{RED}Remember, to crack it:{Default} hashcat -w 3 -a 0 -m 5600 -O -D 1,2 unik-hash-output.txt <WORDLIST> -r <RULES>")
 
 
 if __name__ == "__main__":
@@ -54,8 +64,8 @@ if __name__ == "__main__":
             if exists(args.file):
                 reader(args.file, args.output, args.machine, args.users)
             else:
-                sys.exit(f"The specified file '{args.file}' was not found.")
+                sys.exit(f"{RED}The specified file{Default} '{args.file}' {RED}was not found.{Default}")
         except Exception as error:
-            sys.exit(f"ERROR :\nException : {error}")
+            sys.exit(f"{RED}ERROR :\nException : {error}{Default}")
     else:
-        sys.exit("[!] You must specified a NetNTLMv2 file ! Try '-h' for the help.")
+        sys.exit("{YELLOW}[!] You must specified a NetNTLMv2 file !{Default}\nTry '-h' for the help.")
