@@ -32,8 +32,8 @@ def reader(file, ofile, machine_hash, print_users):
                             final_hash.append(hash)
                         else:
                             if not "$" in user[-1]:
-                            users.append(user)
-                            final_hash.append(hash)
+                                users.append(user)
+                                final_hash.append(hash)
     
     with open(ofile, 'w') as data:
         for hash in final_hash:
