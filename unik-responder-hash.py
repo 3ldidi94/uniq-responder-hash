@@ -74,4 +74,4 @@ if __name__ == "__main__":
         except Exception as error:
             sys.exit(f"{RED}ERROR :\nException : {error}{Default}")
     else:
-        sys.exit("{YELLOW}[!] You must specified a NetNTLMv2 file !{Default}\nTry '-h' for the help.")
+        sys.exit(f"{YELLOW}[!] You must specified a NetNTLMv2 file !{Default}\nTry '-h' for the help.")
