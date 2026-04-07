@@ -16,7 +16,6 @@ Default="\033[0m"
 
 def generator(file):
     item = set()
-
     try:
         if isfile(file):
             return file
@@ -94,7 +93,7 @@ def reader(file, ofile, machine_hash, print_users, users_only):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A program that remove several hashes for a same user. For Responder NetNTLMv2 log file.")
     parser.add_argument("-d","--directory", type=Path, default="/usr/share/responder/logs", required=False, help="Directory containing responder logs.")
-    parser.add_argument("-f","--file", help="File of responder hash to parse.")
+    parser.add_argument("-f","--file", help="File containing Responder captured hashes to parse.")
     parser.add_argument("-u","--users", default=False, action="store_true", help="Print users parsed from the specified file.")
     parser.add_argument("-uo","--users-only", default=False, dest='users_only', action="store_true", help="Only print users parsed. Do not write output file.")
     parser.add_argument("-m","--machine", default=False, action="store_true", help="Keep the machines NetNTLMv2 hash in the output file. Default these hashes are deleted.")
