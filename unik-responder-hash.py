@@ -30,6 +30,12 @@ def generator(file):
         print(f"Error opening {file}. Check if it exist.\n{RED}{e}{Default}")
 
 
+def extract_user(hash):
+    if hash.startswith("$krb5pa$"):
+        return hash.split('$')[3]
+    return hash.split('::')[0]
+
+
 def reader(file, ofile, machine_hash, print_users, users_only):
     users = []
     final_hash = []
@@ -43,7 +49,9 @@ def reader(file, ofile, machine_hash, print_users, users_only):
         with open(item, 'r') as data:
             data = data.read().splitlines()
             for hash in data:
-                user = hash.split('::')[0]
+                if not hash:
+                    continue
+                user = extract_user(hash)
                 if user not in users:
                     if machine_hash:
                         users.append(user)
@@ -57,7 +65,9 @@ def reader(file, ofile, machine_hash, print_users, users_only):
             with open(entry, 'r') as data:
                 data = data.read().splitlines()
                 for hash in data:
-                    user = hash.split('::')[0]
+                    if not hash:
+                        continue
+                    user = extract_user(hash)
                     if user not in users:
                         if machine_hash:
                             users.append(user)
@@ -109,6 +119,8 @@ if __name__ == "__main__":
             reader(args.file, args.output, args.machine, args.users, args.users_only)
         elif args.directory is not None and exists(args.directory):
             reader(args.directory, args.output, args.machine, args.users, args.users_only)
+        else:
+            sys.exit(f"{RED}Neither the specified file nor the directory '{args.directory}' could be found.{Default}")
     except FileNotFoundError:
         sys.exit(f"{RED}The specified file{Default} '{args.file}' {RED}was not found.{Default}")
     except Exception as error:
